@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102a43">
+    <title>FedLens | Federal spending intelligence</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="FedLens navigation">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">FL</div>
+          <div>
+            <strong>FedLens</strong>
+            <span>Public finance intelligence</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <span class="eyebrow">Workspace</span>
+          <button class="nav-item active" type="button">
+            <span class="nav-icon" aria-hidden="true">+</span>
+            <span>Ask FedLens</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section source-status">
+          <span class="eyebrow">Data status</span>
+          <div class="status-row"><span class="status-dot"></span><span>Official data connected</span></div>
+          <p>USAspending aggregates synced to Neon.</p>
+        </div>
+
+        <div class="sidebar-footer">
+          <span class="eyebrow">Current coverage</span>
+          <div class="coverage-list">
+            <span>NASA</span><span>DoD</span><span>DOE</span>
+          </div>
+          <small>FY2021 - FY2025</small>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Federal spending workspace</span>
+            <h1>Ask better questions of public money.</h1>
+          </div>
+          <div class="connection-pill"><span class="status-dot"></span><span id="connection-label">Ready</span></div>
+        </header>
+
+        <div class="content-grid">
+          <section class="chat-panel panel" aria-label="FedLens chat">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Conversation</span>
+                <h2>Federal spending analyst</h2>
+              </div>
+              <span class="panel-tag">Grounded answers</span>
+            </div>
+
+            <div id="messages" class="messages" aria-live="polite"></div>
+
+            <div class="suggestions" aria-label="Example questions">
+              <button type="button" data-prompt="How much did NASA spend by year?">NASA by year</button>
+              <button type="button" data-prompt="Compare NASA and DOD spending by year">Compare NASA and DoD</button>
+              <button type="button" data-prompt="What did the Department of Energy spend in FY2024?">DOE FY2024</button>
+            </div>
+
+            <form id="chat-form" class="composer">
+              <label class="sr-only" for="message-input">Ask a federal spending question</label>
+              <textarea id="message-input" rows="2" maxlength="4000" placeholder="Ask about an agency, year, or comparison..."></textarea>
+              <div class="composer-footer">
+                <span id="composer-hint">Answers are calculated from the connected database.</span>
+                <button id="send-button" class="send-button" type="submit" title="Send question">
+                  <span>Send</span><span aria-hidden="true">&#8594;</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="insight-panel" aria-label="Analysis details">
+            <section class="panel result-panel">
+              <div class="panel-header compact">
+                <div>
+                  <span class="eyebrow">Verified output</span>
+                  <h2>Analysis snapshot</h2>
+                </div>
+                <span id="result-status" class="result-status">Waiting</span>
+              </div>
+              <div id="key-numbers" class="key-numbers empty-state">Your verified figures will appear here.</div>
+              <div class="chart-block">
+                <div class="block-heading"><span>Visual summary</span><span id="chart-unit">USD</span></div>
+                <div id="chart" class="chart empty-state">Ask a question to plot the result.</div>
+              </div>
+            </section>
+
+            <section class="panel detail-panel">
+              <div class="block-heading"><span>Sources</span><span id="source-count">0</span></div>
+              <div id="sources" class="source-list empty-state">Source provenance will appear after analysis.</div>
+            </section>
+
+            <section class="panel detail-panel">
+              <div class="block-heading"><span>Agent activity</span><span class="trace-label">Live trace</span></div>
+              <ol id="activity" class="activity-list empty-state"><li>Workflow events will appear here.</li></ol>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

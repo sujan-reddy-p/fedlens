@@ -2,15 +2,18 @@
 
 FastAPI backend for the FedLens agent.
 
-## First Slice
+## Current MVP
 
-The first implementation milestone establishes:
+The backend currently provides:
 
-- application factory
-- health endpoint
-- typed chat schemas
-- configuration through environment variables
-- USAspending client boundary
-- tests for the API shell
+- FastAPI health and chat endpoints
+- typed request and response schemas
+- a LangGraph workflow that interprets, validates, executes, and explains queries
+- OpenRouter-compatible LLM configuration through `ChatOpenAI`
+- an offline deterministic interpreter for local development
+- a PostgreSQL/Neon data-tool boundary with annual spending analysis and comparisons
+- official USAspending ingestion with provenance and ingestion-run tracking
+- focused unit tests for parsing, tools, ingestion, and API behavior
 
-The LLM and LangGraph workflow come after the first official-data tool works end to end.
+The chat path reads from Neon; it does not call USAspending during a user request. The
+scheduled ingestion job is the separate path that refreshes official annual aggregates.

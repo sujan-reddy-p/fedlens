@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: fedlens-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install .
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LLM_PROVIDER
+        value: openrouter
+      - key: LLM_MODEL
+        value: openrouter/free
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+
+  - type: cron
+    name: fedlens-usaspending-refresh
+    runtime: python
+    rootDir: backend
+    schedule: "0 9 * * 1"
+    buildCommand: pip install .
+    startCommand: python -m scripts.ingest_usaspending --agencies NASA DOD DOE --start-year 2021 --end-year 2025
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: USASPENDING_BASE_URL
+        value: https://api.usaspending.gov

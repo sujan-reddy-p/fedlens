@@ -1,15 +1,11 @@
 # Data Sources
 
-## MVP
+## USAspending.gov
 
-FedLens starts with USAspending.gov as the primary structured source.
+USAspending.gov is FedLens's authoritative structured source for the current application. The ingestion flow uses official reference and budgetary-resources endpoints to resolve agencies and normalize annual obligations and outlays by fiscal year.
 
-Initial integrations should support only the endpoints required for:
+Each stored record keeps the upstream source URL, fiscal-year bounds, metric values, and ingestion status. The chat path reads those normalized records from Neon rather than calling the upstream API during a user request.
 
-- agency spending by fiscal year
-- agency spending over time
-- federal account breakdowns
+## Storage Strategy
 
-## Later
-
-Treasury Fiscal Data and official budget documents can be added after the USAspending flow is reliable.
+FedLens stores compact aggregates needed for fast, reproducible analysis. It does not copy the national transaction corpus into Neon. This keeps the initial deployment small while leaving a clear extension point for account-level data, Treasury Fiscal Data, official budget documents, and a document retrieval layer.

@@ -1,14 +1,26 @@
 # FedLens Architecture
 
-FedLens uses a browser frontend, a FastAPI backend, and official government data APIs.
+FedLens is organized around a strict abstraction boundary between natural-language reasoning and factual computation.
 
-The backend owns all trusted execution:
+## Request Path
 
-- request validation
-- agent routing
-- typed tool calls
-- source metadata
-- deterministic calculations
-- ML inference
+```text
+Browser
+  -> FastAPI /v1/chat
+  -> LangGraph interpretation node
+  -> typed query validation node
+  -> PostgreSQL spending tool
+  -> deterministic aggregation
+  -> answer generation node
+  -> response with figures, charts, sources, and activity
+```
 
-The LLM may route, summarize, and explain verified tool output. It must not be the factual source for federal spending amounts.
+The model does not write SQL and does not invent spending values. It produces a typed query request. The tool layer owns agency lookup, date filtering, metric selection, aggregation, comparisons, and source metadata.
+
+## Data Path
+
+USAspending.gov is used by the separate ingestion command. The command resolves official agency codes, fetches annual budgetary-resource totals, normalizes fiscal-year dates, and upserts compact records into Neon PostgreSQL. Chat requests read from Neon and do not call the upstream government API.
+
+## Provider Boundary
+
+OpenRouter is accessed through the OpenAI-compatible ChatOpenAI interface. The interpreter requests structured JSON and normalizes common fiscal-year shorthand before Pydantic validation. If a free model returns malformed output or times out, the deterministic local interpreter and answerer preserve the data workflow.
